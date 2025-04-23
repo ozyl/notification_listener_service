@@ -45,4 +45,12 @@ class NotificationListenerService {
       return false;
     }
   }
+  static Future<bool> init() async {
+    try {
+      return await methodeChannel.invokeMethod('init');
+    } on PlatformException catch (error) {
+      log("$error");
+      return false;
+    }
+  }
 }

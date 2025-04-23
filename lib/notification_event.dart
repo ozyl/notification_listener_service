@@ -29,6 +29,8 @@ class ServiceNotificationEvent {
 
   /// notification title
   String? title;
+  /// notification category
+  String? category;
 
   /// the notification app icon
   /// To display an image simply use the [Image.memory] widget.
@@ -62,6 +64,7 @@ class ServiceNotificationEvent {
     this.appIcon,
     this.largeIcon,
     this.content,
+    this.category,
   });
 
   ServiceNotificationEvent.fromMap(Map<dynamic, dynamic> map) {
@@ -75,6 +78,7 @@ class ServiceNotificationEvent {
     appIcon = map['appIcon'];
     largeIcon = map['largeIcon'];
     content = map['content'];
+    category = map['category'];
   }
 
   /// send a direct message reply to the incoming notification
@@ -101,6 +105,7 @@ class ServiceNotificationEvent {
       content: $content
       hasRemoved: $hasRemoved
       haveExtraPicture: $haveExtraPicture
+      category: $category
       ''';
   }
 }

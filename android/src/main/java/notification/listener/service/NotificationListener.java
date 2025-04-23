@@ -58,6 +58,7 @@ public class NotificationListener extends NotificationListenerService {
         intent.putExtra(NotificationConstants.PACKAGE_NAME, packageName);
         intent.putExtra(NotificationConstants.ID, notification.getId());
         intent.putExtra(NotificationConstants.CAN_REPLY, action != null);
+        intent.putExtra(NotificationConstants.CATEGORY, notification.getNotification().category);
 
         if (NotificationUtils.getQuickReplyAction(notification.getNotification(), packageName) != null) {
             cachedNotifications.put(notification.getId(), action);

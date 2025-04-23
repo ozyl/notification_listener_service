@@ -27,6 +27,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String packageName = intent.getStringExtra(PACKAGE_NAME);
         String title = intent.getStringExtra(NOTIFICATION_TITLE);
         String content = intent.getStringExtra(NOTIFICATION_CONTENT);
+        String category = intent.getStringExtra(CATEGORY);
         byte[] notificationIcon = intent.getByteArrayExtra(NOTIFICATIONS_ICON);
         byte[] notificationExtrasPicture = intent.getByteArrayExtra(EXTRAS_PICTURE);
         byte[] largeIcon = intent.getByteArrayExtra(NOTIFICATIONS_LARGE_ICON);
@@ -47,6 +48,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         data.put("largeIcon", largeIcon);
         data.put("hasRemoved", hasRemoved);
         data.put("canReply", canReply);
+        data.put("category", category);
 
         eventSink.success(data);
     }

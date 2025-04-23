@@ -1,3 +1,7 @@
+# 修改内容
+增加了守护Service，如果通知service不在，则拉起
+新增category属性（最小版本号21）
+
 # notification_listener_service
 
 A flutter plugin for interacting with Notification Service in Android.

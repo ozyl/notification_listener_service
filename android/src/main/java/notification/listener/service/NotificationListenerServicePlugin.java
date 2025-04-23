@@ -53,10 +53,14 @@ public class NotificationListenerServicePlugin implements FlutterPlugin, Activit
         eventChannel.setStreamHandler(this);
     }
 
+
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         pendingResult = result;
-        if (call.method.equals("isPermissionGranted")) {
+        if (call.method.equals("init")) {
+            context.startService(new Intent(context, NotificationCollectorMonitorService.class));
+            result.success(isPermissionGranted(context));
+        }else if (call.method.equals("isPermissionGranted")) {
             result.success(isPermissionGranted(context));
         } else if (call.method.equals("requestPermission")) {
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
