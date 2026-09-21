@@ -77,10 +77,13 @@ public class NotificationListener extends NotificationListenerService {
             intent.putExtra(NotificationConstants.HAVE_EXTRA_PICTURE, extras.containsKey(Notification.EXTRA_PICTURE));
 
             if (extras.containsKey(Notification.EXTRA_PICTURE)) {
-                Bitmap bmp = (Bitmap) extras.get(Notification.EXTRA_PICTURE);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                intent.putExtra(NotificationConstants.EXTRAS_PICTURE, stream.toByteArray());
+                Object picture = extras.get(Notification.EXTRA_PICTURE);
+                if (picture instanceof Bitmap) {
+                    Bitmap bmp = (Bitmap) picture;
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    intent.putExtra(NotificationConstants.EXTRAS_PICTURE, stream.toByteArray());
+                }
             }
         }
         sendBroadcast(intent);
@@ -91,10 +94,14 @@ public class NotificationListener extends NotificationListenerService {
         try {
             PackageManager manager = getBaseContext().getPackageManager();
             Drawable icon = manager.getApplicationIcon(packageName);
+            Bitmap bitmap = getBitmapFromDrawable(icon);
+            if (bitmap == null) {
+                return null;
+            }
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            getBitmapFromDrawable(icon).compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             return stream.toByteArray();
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -108,7 +115,18 @@ public class NotificationListener extends NotificationListenerService {
                 return null;
             }
             Drawable iconDrawable = largeIcon.loadDrawable(context);
-            Bitmap iconBitmap = ((BitmapDrawable) iconDrawable).getBitmap();
+            if (iconDrawable == null) {
+                return null;
+            }
+            Bitmap iconBitmap;
+            if (iconDrawable instanceof BitmapDrawable) {
+                iconBitmap = ((BitmapDrawable) iconDrawable).getBitmap();
+            } else {
+                iconBitmap = getBitmapFromDrawable(iconDrawable);
+            }
+            if (iconBitmap == null) {
+                return null;
+            }
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 
